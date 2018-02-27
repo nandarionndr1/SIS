@@ -1,0 +1,343 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+-- -----------------------------------------------------
+-- Schema wmcdb
+-- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `wmcdb` ;
+
+-- -----------------------------------------------------
+-- Schema wmcdb
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `wmcdb` DEFAULT CHARACTER SET utf8 ;
+USE `wmcdb` ;
+
+-- -----------------------------------------------------
+-- Table `wmcdb`.`faculties`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `wmcdb`.`faculties` (
+  `staffid` INT(11) NOT NULL AUTO_INCREMENT,
+  `fname` VARCHAR(45) NULL DEFAULT NULL,
+  `mname` VARCHAR(45) NULL DEFAULT NULL,
+  `lname` VARCHAR(45) NULL DEFAULT NULL,
+  `active` TINYINT(1) NULL DEFAULT NULL,
+  PRIMARY KEY (`staffid`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 14
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `wmcdb`.`rooms`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `wmcdb`.`rooms` (
+  `roomid` INT(11) NOT NULL AUTO_INCREMENT,
+  `room_number` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`roomid`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 13
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `wmcdb`.`sections`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `wmcdb`.`sections` (
+  `sectionid` INT(11) NOT NULL AUTO_INCREMENT,
+  `section_name` VARCHAR(45) NULL DEFAULT NULL,
+  `grade_level` INT(2) NULL DEFAULT NULL,
+  `staffid` INT(11) NULL DEFAULT NULL,
+  `school_year` VARCHAR(45) NULL DEFAULT NULL,
+  `rooms_id` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`sectionid`),
+  UNIQUE INDEX `staffid_UNIQUE` (`staffid` ASC),
+  INDEX `fk_sections_faculties1_idx` (`staffid` ASC),
+  INDEX `fk_sections_rooms1_idx` (`rooms_id` ASC),
+  CONSTRAINT `fk_sections_faculties1`
+    FOREIGN KEY (`staffid`)
+    REFERENCES `wmcdb`.`faculties` (`staffid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_sections_rooms1`
+    FOREIGN KEY (`rooms_id`)
+    REFERENCES `wmcdb`.`rooms` (`roomid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 13
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `wmcdb`.`subjects`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `wmcdb`.`subjects` (
+  `subjectid` INT(11) NOT NULL AUTO_INCREMENT,
+  `subject_name` VARCHAR(45) NULL DEFAULT NULL,
+  `subject_desc` VARCHAR(200) NULL DEFAULT NULL,
+  PRIMARY KEY (`subjectid`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 3
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `wmcdb`.`class`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `wmcdb`.`class` (
+  `sectionid` INT(11) NOT NULL,
+  `subjectid` INT(11) NOT NULL,
+  `class_start_time` TIME NULL DEFAULT NULL,
+  `class_end_time` TIME NULL DEFAULT NULL,
+  `classid` INT(11) NOT NULL AUTO_INCREMENT,
+  `staffid` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`classid`),
+  UNIQUE INDEX `staffid_UNIQUE` (`staffid` ASC),
+  INDEX `fk_sections_has_subjects_subjects1_idx` (`subjectid` ASC),
+  INDEX `fk_sections_has_subjects_sections_idx` (`sectionid` ASC),
+  INDEX `fk_class_faculties1_idx` (`staffid` ASC),
+  CONSTRAINT `fk_class_faculties1`
+    FOREIGN KEY (`staffid`)
+    REFERENCES `wmcdb`.`faculties` (`staffid`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_sections_has_subjects_sections`
+    FOREIGN KEY (`sectionid`)
+    REFERENCES `wmcdb`.`sections` (`sectionid`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_sections_has_subjects_subjects1`
+    FOREIGN KEY (`subjectid`)
+    REFERENCES `wmcdb`.`subjects` (`subjectid`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 2
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `wmcdb`.`ref_remarks`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `wmcdb`.`ref_remarks` (
+  `remarkid` INT(11) NOT NULL,
+  `remark_description` VARCHAR(100) NULL DEFAULT NULL,
+  PRIMARY KEY (`remarkid`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `wmcdb`.`grade_sheet`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `wmcdb`.`grade_sheet` (
+  `grade_sheet_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `classid` INT(11) NOT NULL,
+  `remarkid` INT(11) NOT NULL,
+  `grade_sheetcol` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`grade_sheet_id`, `classid`),
+  INDEX `fk_grade_sheet_class1_idx` (`classid` ASC),
+  INDEX `fk_grade_sheet_ref_remarks1_idx` (`remarkid` ASC),
+  CONSTRAINT `fk_grade_sheet_class1`
+    FOREIGN KEY (`classid`)
+    REFERENCES `wmcdb`.`class` (`classid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_grade_sheet_ref_remarks1`
+    FOREIGN KEY (`remarkid`)
+    REFERENCES `wmcdb`.`ref_remarks` (`remarkid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `wmcdb`.`grading_component`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `wmcdb`.`grading_component` (
+  `component_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `grade_sheet_id` INT(11) NOT NULL,
+  `component_name` VARCHAR(45) NULL DEFAULT NULL,
+  `percentage` DOUBLE NULL DEFAULT NULL,
+  `total_score` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`component_id`, `grade_sheet_id`),
+  INDEX `fk_grading_component_grade_sheet1_idx` (`grade_sheet_id` ASC),
+  CONSTRAINT `fk_grading_component_grade_sheet1`
+    FOREIGN KEY (`grade_sheet_id`)
+    REFERENCES `wmcdb`.`grade_sheet` (`grade_sheet_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `wmcdb`.`requirements`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `wmcdb`.`requirements` (
+  `requirementid` INT(11) NOT NULL AUTO_INCREMENT,
+  `form137_path` VARCHAR(45) NULL DEFAULT NULL,
+  `form138_path` VARCHAR(45) NULL DEFAULT NULL,
+  `birth_cert_path` VARCHAR(45) NULL DEFAULT NULL,
+  `goodm_cert_path` VARCHAR(45) NULL DEFAULT NULL,
+  `admission_status` TINYINT(1) NULL DEFAULT '0',
+  `date_admitted` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_concluded` DATETIME NULL DEFAULT NULL,
+  PRIMARY KEY (`requirementid`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 17
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `wmcdb`.`student`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `wmcdb`.`student` (
+  `studentid` INT(11) NOT NULL AUTO_INCREMENT,
+  `fname` VARCHAR(45) NULL DEFAULT NULL,
+  `mname` VARCHAR(45) NOT NULL,
+  `lname` VARCHAR(45) NULL DEFAULT NULL,
+  `active` TINYINT(1) NULL DEFAULT NULL,
+  `address` VARCHAR(45) NULL DEFAULT NULL,
+  `birthday` DATE NULL DEFAULT NULL,
+  `birthplace` VARCHAR(200) NULL DEFAULT NULL,
+  `LastSchool` VARCHAR(45) NULL DEFAULT NULL,
+  `LastSchoolAddress` VARCHAR(200) NULL DEFAULT NULL,
+  `Others` VARCHAR(1000) NULL DEFAULT NULL,
+  `requirementid` INT(11) NOT NULL,
+  `grade_level_id` INT(11) NULL DEFAULT NULL,
+  `img_directory` VARCHAR(200) NULL DEFAULT NULL,
+  `lrn` INT(12) NULL DEFAULT NULL,
+  PRIMARY KEY (`studentid`),
+  INDEX `fk_student_requirements1_idx` (`requirementid` ASC),
+  INDEX `fk_student_ref_grade_level1_idx` (`grade_level_id` ASC),
+  CONSTRAINT `fk_student_requirements1`
+    FOREIGN KEY (`requirementid`)
+    REFERENCES `wmcdb`.`requirements` (`requirementid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 11
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `wmcdb`.`guardian_info`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `wmcdb`.`guardian_info` (
+  `student_studentid` INT(11) NOT NULL,
+  `father_fname` VARCHAR(45) NULL DEFAULT NULL,
+  `father_lname` VARCHAR(45) NULL DEFAULT NULL,
+  `father_mname` VARCHAR(45) NULL DEFAULT NULL,
+  `father_occu` VARCHAR(45) NULL DEFAULT NULL,
+  `father_office` VARCHAR(45) NULL DEFAULT NULL,
+  `father_mobile` VARCHAR(45) NULL DEFAULT NULL,
+  `mother_fname` VARCHAR(45) NULL DEFAULT NULL,
+  `mother_lname` VARCHAR(45) NULL DEFAULT NULL,
+  `mother_mname` VARCHAR(45) NULL DEFAULT NULL,
+  `mother_occu` VARCHAR(45) NULL DEFAULT NULL,
+  `mother_office` VARCHAR(45) NULL DEFAULT NULL,
+  `mother_mobile` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`student_studentid`),
+  CONSTRAINT `fk_guardian_info_student`
+    FOREIGN KEY (`student_studentid`)
+    REFERENCES `wmcdb`.`student` (`studentid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `wmcdb`.`student_class`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `wmcdb`.`student_class` (
+  `studentid` INT(11) NOT NULL,
+  `classid` INT(11) NOT NULL,
+  `final_class_grade` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`studentid`, `classid`),
+  INDEX `fk_student_has_sections_has_subjects_student1_idx` (`studentid` ASC),
+  INDEX `fk_student_class_class1_idx` (`classid` ASC),
+  CONSTRAINT `fk_student_class_class1`
+    FOREIGN KEY (`classid`)
+    REFERENCES `wmcdb`.`class` (`classid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_student_has_sections_has_subjects_student1`
+    FOREIGN KEY (`studentid`)
+    REFERENCES `wmcdb`.`student` (`studentid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `wmcdb`.`student_component_score`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `wmcdb`.`student_component_score` (
+  `component_id` INT(11) NOT NULL,
+  `studentid` INT(11) NOT NULL,
+  `grade` DOUBLE NULL DEFAULT NULL,
+  `actual_score` DOUBLE NULL DEFAULT NULL,
+  PRIMARY KEY (`component_id`, `studentid`),
+  INDEX `fk_grading_component_has_student_class_student_class1_idx` (`studentid` ASC),
+  INDEX `fk_grading_component_has_student_class_grading_component1_idx` (`component_id` ASC),
+  CONSTRAINT `fk_grading_component_has_student_class_grading_component1`
+    FOREIGN KEY (`component_id`)
+    REFERENCES `wmcdb`.`grading_component` (`component_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_grading_component_has_student_class_student_class1`
+    FOREIGN KEY (`studentid`)
+    REFERENCES `wmcdb`.`student_class` (`studentid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `wmcdb`.`student_section`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `wmcdb`.`student_section` (
+  `studentid` INT(11) NOT NULL,
+  `sectionid` INT(11) NOT NULL,
+  PRIMARY KEY (`studentid`, `sectionid`),
+  INDEX `fk_student_has_sections_sections1_idx` (`sectionid` ASC),
+  INDEX `fk_student_has_sections_student1_idx` (`studentid` ASC),
+  CONSTRAINT `fk_student_has_sections_sections1`
+    FOREIGN KEY (`sectionid`)
+    REFERENCES `wmcdb`.`sections` (`sectionid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_student_has_sections_student1`
+    FOREIGN KEY (`studentid`)
+    REFERENCES `wmcdb`.`student` (`studentid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `wmcdb`.`users`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `wmcdb`.`users` (
+  `userid` INT(11) NOT NULL,
+  `userType` VARCHAR(45) NOT NULL,
+  `username` VARCHAR(45) NULL DEFAULT NULL,
+  `password` VARCHAR(45) NULL DEFAULT NULL,
+  `active` TINYINT(1) NULL DEFAULT NULL,
+  PRIMARY KEY (`userid`, `userType`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

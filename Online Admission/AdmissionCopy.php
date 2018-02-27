@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>WMC</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/thumbnail-gallery.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+               
+                <a class="navbar-brand" href=../Homepage/index.html>WMC</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+           
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+<form action="" method="post">
+    <!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+
+          
+    <div class="container-fluid">
+      <form class="row">
+     
+       
+          <h1 class="page-header">Fill out enrollment form</h1>
+            
+            
+            <h3>Student</h3>
+            <label>Name</label>
+            <div class="row">
+                <div class = "col-lg-6">
+                    <form role="form">
+                        <div class ="form-group">
+                            <input class = "form-control" placeholder = "Surname"/>
+                            
+                        </div>
+                    </form>
+                </div>
+                <div class = "col-lg-4">
+                    <form role="form">
+                        <div class ="form-group">
+                            
+                            <input class = "form-control" placeholder = "Firstname"/>
+                            
+                        </div>
+                    </form>
+                </div>
+                <div class = "col-lg-2">
+                    <form role="form">
+                        <div class ="form-group">
+                            
+                            <input class = "form-control" placeholder = "Middle Name"/>
+                            
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            
+            <label for="meeting">Address</label>
+            <div class = "row"> 
+                <div class="col-lg-4">
+                    <input class="form-control" placeholder = "Street"/>
+                </div>
+                <div class="col-lg-2">
+                    <input class="form-control" placeholder = "Barangay"/>
+                </div>
+                <div class="col-lg-3">
+                    <input class="form-control" placeholder = "Municipality/City"/>
+                </div>
+                <div class="col-lg-3">
+                    <input class="form-control" placeholder = "Province"/>
+                </div>
+                
+            </div>
+            </br>
+            <div class = "row"> 
+                <div class="col-lg-4">
+                    <label for="meeting">Birthday</label>
+                    </br>
+                    <input class = "form-control" input id="meeting" type="date" value="2016-01-13"/>
+                </div>
+                <div class="col-lg-7">
+                    <label>Birthplace</label>
+                    <input class="form-control" placeholder = "Birthplace"/>
+                </div>
+            </div>
+          
+                    <h3>Last school attended</h3>
+                    
+                    <div class="row">
+                        
+                        <div class = "col-lg-12">
+                            <form role="form">
+                                <div class ="form-group">
+                                    <label>Name of school</label>
+                                    <input class = "form-control" placeholder = "e.g Westside Montessori Centrum"/>
+                                    
+                                </div>
+                            </form>
+                        </div>
+                        <div class = "col-lg-12">
+                            <form role="form">
+                                <div class ="form-group">
+                                    <label>School address</label>
+                                    <input class = "form-control" placeholder = "Address"/>
+                                    
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                
+                
+              
+                    <h3>Others</h3>
+                    <label>Is there any limitation on physical activity of your child/ special attention?</label>
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" value="option1" onclick="othersYes()">Yes
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" value="option2"  onclick="othersNo()">No
+                    </label>
+                    <label>If your child has experienced previous difficulties in school, please indicate the source and nature of difficulty: </label>
+                    <textarea class="form-control" id="others" name="others" rows="3" disabled></textarea>
+
+            <div class = "row">
+                
+                <div class ="col-lg-6">
+                    <h3>Father</h3>
+                    <label>Name</label>
+                    <div class="row">
+                        
+                        <div class = "col-lg-4">
+                            <form role="form">
+                                <div class ="form-group">
+                                    
+                                    <input class = "form-control" placeholder = "Surname"/>
+                                    
+                                </div>
+                            </form>
+                        </div>
+                        <div class = "col-lg-4">
+                            <form role="form">
+                                <div class ="form-group">
+                                    
+                                    <input class = "form-control" placeholder = "Firstname"/>
+                                    
+                                </div>
+                            </form>
+                        </div>
+                        <div class = "col-lg-3">
+                            <form role="form">
+                                <div class ="form-group">
+                                    
+                                    <input class = "form-control" placeholder = "Middle"/>
+                                    
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div class = "row"> 
+                            
+                            <div class="col-lg-10">
+                                <label>Occupation</label>
+                                <input class="form-control" placeholder = "Occupation"/>
+                            </div>
+                            
+                            
+                    </div>
+                    </br>
+
+                    <div class = "row"> 
+                            
+                            <div class="col-lg-5">
+                                <label>Office number</label>
+                                <input class="form-control" placeholder = "Office number"/>
+                            </div>
+                            <div class="col-lg-5">
+                                <label>Mobile number</label>
+                                <input class="form-control" placeholder = "Mobile number"/>
+                            </div>
+                    </div>
+                </div>
+                <div class ="col-lg-6">
+                    <h3>Mother</h3>
+                    <label>Name</label>
+                    <div class="row">
+                        
+                        <div class = "col-lg-4">
+                            <form role="form">
+                                <div class ="form-group">
+                                    
+                                    <input class = "form-control" placeholder = "Surname"/>
+                                    
+                                </div>
+                            </form>
+                        </div>
+                        <div class = "col-lg-4">
+                            <form role="form">
+                                <div class ="form-group">
+                                    
+                                    <input class = "form-control" placeholder = "Firstname"/>
+                                    
+                                </div>
+                            </form>
+                        </div>
+                        <div class = "col-lg-3">
+                            <form role="form">
+                                <div class ="form-group">
+                                    
+                                    <input class = "form-control" placeholder = "Middle"/>
+                                    
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class = "row">
+                            
+                            <div class="col-lg-10">
+                                <label>Occupation</label>
+                                <input class="form-control" placeholder = "Occupation"/>
+                            </div>
+                    </div>
+                    </br>
+                    <div class = "row"> 
+                            
+                            <div class="col-lg-5">
+                                <label>Office number</label>
+                                <input class="form-control" placeholder = "Office number"/>
+                            </div>
+                            <div class="col-lg-5">
+                                <label>Mobile number</label>
+                                <input class="form-control" placeholder = "Mobile number"/>
+                            </div>
+                    </div>
+                </div>
+            <div class = "row">
+                <div class = "col-md-12">
+                <br>
+                    <hr>
+
+                    <div class = "row">
+
+                        <div class="col-lg-4">
+                        </div>
+                        <div class="col-lg-4">
+
+                                <h3>Register a student account</h3>
+                            <br>
+                                <label>Email </label>
+                                <input class="form-control" name="username" placeholder = "e.g: montesorry@gmail.com"/>
+                                <label>Password </label>
+                                <input class="form-control" type="password" name="password" placeholder = "password "/>
+
+                        </div>
+                        <div class="col-lg-4">
+
+                        </div>
+
+
+
+                    </div>
+                    <hr>
+                 <button class = "center-block btn btn-default btn-lg" data-toggle = "modal" data-target = "#myModal">
+                                     Submit
+                                        </button>
+                     <div class = "modal fade" id = "myModal" tabindex = "-1" role = "dialog" 
+                       aria-labelledby = "myModalLabel" aria-hidden = "true">
+                       
+                       <div class = "modal-dialog">
+                          <div class = "modal-content">
+                             
+                             <div class = "modal-header">
+                                <button type = "button" class = "close" data-dismiss = "modal" aria-hidden = "true">
+                                   ×
+                                </button>
+                                
+                                <h4 class = "modal-title" id = "myModalLabel">
+                                   You successfuly passed the enrollment form. <br>
+                                   Kindly wait for the email of the school registrar regarding the status of the application.
+                                </h4>
+                             </div>
+                             
+                            
+                             
+                             <div class = "modal-footer">
+                                
+                                
+                                 <button type="submit" class = "btn btn-default">Go back to homepage</button>
+
+                             </div>
+                             
+                          </div>
+                       </div>
+
+                    </div>
+
+                </div>
+            </div>
+                
+                </div>
+            <hr>
+
+      </form>
+    </div>
+
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+</html>
+<script>
+    function othersYes() {
+        document.getElementById('others').disabled = false;
+    }
+    function othersNo() {
+        document.getElementById('others').disabled = true;
+    }
+</script>
